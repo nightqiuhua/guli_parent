@@ -1,6 +1,5 @@
 package com.atguigu.eduservice.entity.subject;
 
-
 import lombok.Data;
 
 import java.util.ArrayList;

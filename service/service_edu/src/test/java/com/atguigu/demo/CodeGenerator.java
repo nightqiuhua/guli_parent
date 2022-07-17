@@ -26,7 +26,7 @@ public class CodeGenerator {
         // 2、全局配置
         GlobalConfig gc = new GlobalConfig();
         String projectPath = System.getProperty("user.dir");
-        gc.setOutputDir("F:\\SSGSCW\\guli_parent\\service\\service_edu" + "/src/main/java");
+        gc.setOutputDir("F:\\SSGSCW\\guli_parent\\service\\service_edu" + "/src/main/java"); // 微服务模块路径
 
         gc.setAuthor("testjava");
         gc.setOpen(false); //生成后是否打开资源管理器
@@ -43,7 +43,7 @@ public class CodeGenerator {
 
         // 3、数据源配置
         DataSourceConfig dsc = new DataSourceConfig();
-        dsc.setUrl("jdbc:mysql://localhost:3306/guli_edu?serverTimezone=GMT%2B8");
+        dsc.setUrl("jdbc:mysql://localhost:3306/guli?serverTimezone=GMT%2B8");
         dsc.setDriverName("com.mysql.cj.jdbc.Driver");
         dsc.setUsername("root");
         dsc.setPassword("123456");
@@ -65,7 +65,7 @@ public class CodeGenerator {
         // 5、策略配置
         StrategyConfig strategy = new StrategyConfig();
 
-        strategy.setInclude("edu_subject");
+        strategy.setInclude("edu_course","edu_course_description","edu_chapter","edu_video"); // 表名
 
         strategy.setNaming(NamingStrategy.underline_to_camel);//数据库表映射到实体的命名策略
         strategy.setTablePrefix(pc.getModuleName() + "_"); //生成实体时去掉表前缀

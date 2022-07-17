@@ -24,11 +24,12 @@ import java.util.List;
  * </p>
  *
  * @author testjava
- * @since 2022-03-27
+ * @since 2022-07-17
  */
 @Service
 public class EduSubjectServiceImpl extends ServiceImpl<EduSubjectMapper, EduSubject> implements EduSubjectService {
 
+    //添加课程分类
     @Override
     public void saveSubject(MultipartFile file, EduSubjectService subjectService) {
         try {
@@ -36,10 +37,9 @@ public class EduSubjectServiceImpl extends ServiceImpl<EduSubjectMapper, EduSubj
             InputStream in = file.getInputStream();
             //调用方法进行读取
             EasyExcel.read(in, SubjectData.class,new SubjectExcelListener(subjectService)).sheet().doRead();
-        } catch(Exception e){
+        }catch(Exception e){
             e.printStackTrace();
         }
-
     }
 
     //课程分类列表（树形）
@@ -50,8 +50,6 @@ public class EduSubjectServiceImpl extends ServiceImpl<EduSubjectMapper, EduSubj
         wrapperOne.eq("parent_id","0");
         List<EduSubject> oneSubjectList = baseMapper.selectList(wrapperOne);
 
-
-
         //2 查询所有二级分类  parentid != 0
         QueryWrapper<EduSubject> wrapperTwo = new QueryWrapper<>();
         wrapperTwo.ne("parent_id","0");
@@ -60,16 +58,14 @@ public class EduSubjectServiceImpl extends ServiceImpl<EduSubjectMapper, EduSubj
         //创建list集合，用于存储最终封装数据
         List<OneSubject> finalSubjectList = new ArrayList<>();
 
-
         //3 封装一级分类
         //查询出来所有的一级分类list集合遍历，得到每个一级分类对象，获取每个一级分类对象值，
         //封装到要求的list集合里面 List<OneSubject> finalSubjectList
-        for(int i =0;i < oneSubjectList.size();i++){ //遍历oneSubjectList集合
+        for (int i = 0; i < oneSubjectList.size(); i++) { //遍历oneSubjectList集合
             //得到oneSubjectList每个eduSubject对象
             EduSubject eduSubject = oneSubjectList.get(i);
             //把eduSubject里面值获取出来，放到OneSubject对象里面
             OneSubject oneSubject = new OneSubject();
-
 //            oneSubject.setId(eduSubject.getId());
 //            oneSubject.setTitle(eduSubject.getTitle());
             //eduSubject值复制到对应oneSubject对象里面
@@ -81,11 +77,11 @@ public class EduSubjectServiceImpl extends ServiceImpl<EduSubjectMapper, EduSubj
             //创建list集合封装每个一级分类的二级分类
             List<TwoSubject> twoFinalSubjectList = new ArrayList<>();
             //遍历二级分类list集合
-            for(int m = 0; m < twoSubjectList.size();m++){
+            for (int m = 0; m < twoSubjectList.size(); m++) {
                 //获取每个二级分类
                 EduSubject tSubject = twoSubjectList.get(m);
                 //判断二级分类parentid和一级分类id是否一样
-                if(tSubject.getParentId().equals(eduSubject.getId())){
+                if(tSubject.getParentId().equals(eduSubject.getId())) {
                     //把tSubject值复制到TwoSubject里面，放到twoFinalSubjectList里面
                     TwoSubject twoSubject = new TwoSubject();
                     BeanUtils.copyProperties(tSubject,twoSubject);
@@ -97,5 +93,4 @@ public class EduSubjectServiceImpl extends ServiceImpl<EduSubjectMapper, EduSubj
         }
         return finalSubjectList;
     }
-
 }

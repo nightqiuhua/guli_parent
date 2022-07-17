@@ -17,7 +17,7 @@ import java.util.List;
  * </p>
  *
  * @author testjava
- * @since 2022-03-27
+ * @since 2022-07-17
  */
 @RestController
 @RequestMapping("/eduservice/subject")
@@ -30,7 +30,7 @@ public class EduSubjectController {
     //添加课程分类
     //获取上传过来文件，把文件内容读取出来
     @PostMapping("addSubject")
-    public R addSubject(MultipartFile file){
+    public R addSubject(MultipartFile file) {
         //上传过来excel文件
         subjectService.saveSubject(file,subjectService);
         return R.ok();
@@ -38,7 +38,7 @@ public class EduSubjectController {
 
     //课程分类列表（树形）
     @GetMapping("getAllSubject")
-    public R getAllSubject(){
+    public R getAllSubject() {
         //list集合泛型是一级分类
         List<OneSubject> list = subjectService.getAllOneTwoSubject();
         return R.ok().data("list",list);
